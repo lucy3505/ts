@@ -1,57 +1,46 @@
-function add(a, b) {
-    return a + b;
+var a;
+a = 10;
+a = "11";
+a = [1, 2, 3];
+var log = function (value) {
+    if (typeof value === "number") {
+        return "your number is ".concat(value);
+    }
+    if (typeof value === "string") {
+        return "your name is ".concat(value);
+    }
+    throw new Error("Expected string or number,got ".concat(value, "."));
+};
+console.log(log("hfppjj"));
+var b;
+b = [1, 2, "123", [1, 2, 3]];
+//typescript自己进行的判断:作为了解 value is number 是ts自己做的判断
+function isNumber(value) {
+    //可以进行进一步处理
+    //   return typeof value === "number";
+    return true;
 }
-// let sum=add("10")//这里报错，对参数个数是有限制的
-// console.log(sum)
-function add1(a, b) {
-    return a + b;
+function isString(value) {
+    return typeof value === "string";
 }
-var add2 = function (a, b) {
-    return a + b;
-};
-var sum2 = add1(19, 29); //这里对类型进行了限制
-var sum3 = add1("19", 29); //这里对类型进行了限制
-//返回值
-var add3 = function (a, b) {
-    return a + b;
-};
-var sum = add3(1, 2);
-console.log(sum.toFixed(2));
-var add4 = function (a, b) {
-    return a.toString() + b.toString();
-};
-var sum4 = add4(1, 2);
-console.log(sum4.substring(2, 2));
-//没有返回值:void
-var add5 = function (a, b) {
-    console.log(11);
-};
-//默认值  c=20会自动继承类型number
-var add6 = function (a, b, c) {
-    if (b === void 0) { b = 10; }
-    if (c === void 0) { c = 20; }
-    console.log(a + b + c);
-};
-var sum6 = add6(1);
-//可选参数 对于可选参数这种，函数内要注意对这个可选参数的判断
-var add7 = function (a, b) {
-    if (b) {
-        console.log(a + b);
+var log2 = function (value) {
+    if (isNumber(value)) {
+        return "your number is ".concat(value);
     }
-    else {
-        console.log(a);
+    if (isString(value)) {
+        return "your name is ".concat(value);
     }
+    throw new Error("Expected string or number,got ".concat(value, "."));
 };
-var sum7 = add7(1);
-//参数不确定，也要保证能正常运行 restParams
-var add8 = function (a) {
-    var num = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        num[_i - 1] = arguments[_i];
+console.log(log(222));
+//union type
+var log3 = function (value) {
+    if (isNumber(value)) {
+        return "your number is ".concat(value);
     }
-    return num.reduce(function (total, num) {
-        return total + num;
-    }, a);
+    if (isString(value)) {
+        return "your name is ".concat(value);
+    }
+    // throw new Error(`Expected string or number,got ${value}.`);
 };
-var sum8 = add8(1, 2, 3, 4, 5);
-console.log(sum8);
+console.log(log3(undefined)); //undefined和null 是自己独自的类型

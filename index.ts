@@ -1,60 +1,60 @@
-function add(a, b) {
-  return a + b;
-}
+let a: any;
 
-// let sum=add("10")//这里报错，对参数个数是有限制的
-// console.log(sum)
+a = 10;
+a = "11";
+a = [1, 2, 3];
 
-function add1(a: number, b: number): number {
-  return a + b;
-}
-const add2 = (a: number, b: number) => {
-  return a + b;
-};
-
-let sum2 = add1(19, 29); //这里对类型进行了限制
-let sum3 = add1("19", 29); //这里对类型进行了限制
-
-//返回值
-const add3 = (a: number, b: number): number => {
-  return a + b;
-};
-let sum = add3(1, 2);
-console.log(sum.toFixed(2));
-
-const add4 = (a: number, b: number): string => {
-  return a.toString() + b.toString();
-};
-let sum4 = add4(1, 2);
-console.log(sum4.substring(2, 2));
-
-//没有返回值:void
-
-const add5 = (a: number, b: number): void => {
-  console.log(11);
-};
-
-//默认值  c=20会自动继承类型number
-const add6 = (a: number, b: number = 10, c = 20): void => {
-  console.log(a + b + c);
-};
-const sum6 = add6(1);
-
-//可选参数 对于可选参数这种，函数内要注意对这个可选参数的判断
-const add7 = (a: number, b?: number): void => {
-  if (b) {
-    console.log(a + b);
-  } else {
-    console.log(a);
+const log = (value: any) => {
+  if (typeof value === "number") {
+    return `your number is ${value}`;
   }
-};
-const sum7 = add7(1);
+  if (typeof value === "string") {
+    return `your name is ${value}`;
+  }
 
-//参数不确定，也要保证能正常运行 restParams
-const add8 = (a: number, ...num: number[]): number => {
-  return num.reduce(function (total, num) {
-    return total + num;
-  }, a);
+  throw new Error(`Expected string or number,got ${value}.`);
 };
-const sum8 = add8(1, 2, 3, 4, 5);
-console.log(sum8);
+
+console.log(log("hfppjj"));
+
+let b: any[];
+b = [1, 2, "123", [1, 2, 3]];
+
+//typescript自己进行的判断:作为了解 value is number 是ts自己做的判断
+function isNumber(value: any): value is number {
+  //可以进行进一步处理
+  //   return typeof value === "number";
+
+  return true;
+}
+
+function isString(value: any): value is string {
+  return typeof value === "string";
+}
+
+const log2 = (value: any) => {
+  if (isNumber(value)) {
+    return `your number is ${value}`;
+  }
+  if (isString(value)) {
+    return `your name is ${value}`;
+  }
+
+  throw new Error(`Expected string or number,got ${value}.`);
+};
+
+console.log(log(222));
+
+//union type
+const log3 = (value: string | number | boolean | null) => {
+  if (isNumber(value)) {
+    return `your number is ${value}`;
+  }
+  if (isString(value)) {
+    return `your name is ${value}`;
+  }
+
+  // throw new Error(`Expected string or number,got ${value}.`);
+};
+
+console.log(log3(undefined)); //undefined和null 是自己独自的类型
