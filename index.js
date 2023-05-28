@@ -1,46 +1,37 @@
-var a;
-a = 10;
-a = "11";
-a = [1, 2, 3];
-var log = function (value) {
-    if (typeof value === "number") {
-        return "your number is ".concat(value);
+//模版
+var Person = /** @class */ (function () {
+    function Person() {
     }
-    if (typeof value === "string") {
-        return "your name is ".concat(value);
+    return Person;
+}());
+//生成一个对象
+var aPerson = new Person();
+//设置firstName的内容
+aPerson.firstName = "rails";
+//读取 firstName的内容
+console.log(aPerson.firstName);
+var Movie = /** @class */ (function () {
+    //this 指向生成的object本身
+    function Movie(name, play_count) {
+        this.name = name;
+        this.play_count = play_count;
     }
-    throw new Error("Expected string or number,got ".concat(value, "."));
-};
-console.log(log("hfppjj"));
-var b;
-b = [1, 2, "123", [1, 2, 3]];
-//typescript自己进行的判断:作为了解 value is number 是ts自己做的判断
-function isNumber(value) {
-    //可以进行进一步处理
-    //   return typeof value === "number";
-    return true;
-}
-function isString(value) {
-    return typeof value === "string";
-}
-var log2 = function (value) {
-    if (isNumber(value)) {
-        return "your number is ".concat(value);
-    }
-    if (isString(value)) {
-        return "your name is ".concat(value);
-    }
-    throw new Error("Expected string or number,got ".concat(value, "."));
-};
-console.log(log(222));
-//union type
-var log3 = function (value) {
-    if (isNumber(value)) {
-        return "your number is ".concat(value);
-    }
-    if (isString(value)) {
-        return "your name is ".concat(value);
-    }
-    // throw new Error(`Expected string or number,got ${value}.`);
-};
-console.log(log3(undefined)); //undefined和null 是自己独自的类型
+    //method 方法 可能会对数据进行操作
+    Movie.prototype.display_play_count = function (padding) {
+        if (padding === void 0) { padding = "******"; }
+        return "".concat(this.play_count, " \u6B21\u6570 ").concat(padding);
+    };
+    //对bject的数据进行操作
+    Movie.prototype.increase_play_count = function () {
+        this.play_count += 1;
+    };
+    return Movie;
+}());
+//生成一个 object
+var m = new Movie("诱人的typescript", 14);
+// m.name = "诱人的typescript";
+console.log(m.name);
+console.log("".concat(m.play_count, " \u5206\u949F"));
+console.log(m.display_play_count());
+m.increase_play_count();
+console.log(m.display_play_count());

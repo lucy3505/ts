@@ -1,60 +1,45 @@
-let a: any;
+//模版
 
-a = 10;
-a = "11";
-a = [1, 2, 3];
-
-const log = (value: any) => {
-  if (typeof value === "number") {
-    return `your number is ${value}`;
-  }
-  if (typeof value === "string") {
-    return `your name is ${value}`;
-  }
-
-  throw new Error(`Expected string or number,got ${value}.`);
-};
-
-console.log(log("hfppjj"));
-
-let b: any[];
-b = [1, 2, "123", [1, 2, 3]];
-
-//typescript自己进行的判断:作为了解 value is number 是ts自己做的判断
-function isNumber(value: any): value is number {
-  //可以进行进一步处理
-  //   return typeof value === "number";
-
-  return true;
+class Person {
+  //定义了两个数据
+  firstName: string; //对类型进行限制
+  lastName;
 }
 
-function isString(value: any): value is string {
-  return typeof value === "string";
+//生成一个对象
+let aPerson = new Person();
+//设置firstName的内容
+aPerson.firstName = "rails";
+//读取 firstName的内容
+console.log(aPerson.firstName);
+
+class Movie {
+  name: string;
+  play_count: number;
+  created_at: string;
+  time: string;
+  //this 指向生成的object本身
+  constructor(name: string, play_count: number) {
+    this.name = name;
+    this.play_count = play_count;
+  }
+  //method 方法 可能会对数据进行操作
+  display_play_count(padding: string = `******`) {
+    return `${this.play_count} 次数 ${padding}`;
+  }
+
+  //对bject的数据进行操作
+
+  increase_play_count() {
+    this.play_count += 1;
+  }
 }
 
-const log2 = (value: any) => {
-  if (isNumber(value)) {
-    return `your number is ${value}`;
-  }
-  if (isString(value)) {
-    return `your name is ${value}`;
-  }
-
-  throw new Error(`Expected string or number,got ${value}.`);
-};
-
-console.log(log(222));
-
-//union type
-const log3 = (value: string | number | boolean | null) => {
-  if (isNumber(value)) {
-    return `your number is ${value}`;
-  }
-  if (isString(value)) {
-    return `your name is ${value}`;
-  }
-
-  // throw new Error(`Expected string or number,got ${value}.`);
-};
-
-console.log(log3(undefined)); //undefined和null 是自己独自的类型
+//生成一个 object
+let m = new Movie("诱人的typescript", 14);
+// m.name = "诱人的typescript";
+console.log(m.name);
+console.log(`${m.play_count} 分钟`);
+console.log(m.display_play_count());
+m.increase_play_count();
+console.log(m.display_play_count());
