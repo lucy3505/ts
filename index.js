@@ -1,37 +1,54 @@
 //模版
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Person = /** @class */ (function () {
     function Person() {
     }
+    Person.prototype.greet = function () {
+        console.log("hi");
+    };
+    Person.prototype.othergreet = function () {
+        this.greet();
+        console.log("*******");
+    };
     return Person;
 }());
-//生成一个对象
-var aPerson = new Person();
-//设置firstName的内容
-aPerson.firstName = "rails";
-//读取 firstName的内容
-console.log(aPerson.firstName);
-var Movie = /** @class */ (function () {
-    //this 指向生成的object本身
-    function Movie(name, play_count) {
-        this.name = name;
-        this.play_count = play_count;
+//继承父类的数据和行为，就是属性和方法
+//它的父类就是Person
+var Programmer = /** @class */ (function (_super) {
+    __extends(Programmer, _super);
+    function Programmer() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    //method 方法 可能会对数据进行操作
-    Movie.prototype.display_play_count = function (padding) {
-        if (padding === void 0) { padding = "******"; }
-        return "".concat(this.play_count, " \u6B21\u6570 ").concat(padding);
+    Programmer.prototype.greet = function () {
+        console.log("hello world");
     };
-    //对bject的数据进行操作
-    Movie.prototype.increase_play_count = function () {
-        this.play_count += 1;
+    Programmer.prototype.greetLikeNormalPeople = function () {
+        this.greet();
+        //super代表父类
+        _super.prototype.greet.call(this);
     };
-    return Movie;
-}());
-//生成一个 object
-var m = new Movie("诱人的typescript", 14);
-// m.name = "诱人的typescript";
-console.log(m.name);
-console.log("".concat(m.play_count, " \u5206\u949F"));
-console.log(m.display_play_count());
-m.increase_play_count();
-console.log(m.display_play_count());
+    return Programmer;
+}(Person));
+var aProgrammer = new Programmer(); //这里aProgrammer类型可以用Programmer,因为是Programmer new 出来的
+aProgrammer.greet();
+aProgrammer.greetLikeNormalPeople();
+var aProgrammer2 = new Programmer(); //这里aProgrammer2类型可以用Person,但是使用的时候就只能用Person里的内容，否则编译报错
+aProgrammer2.greet();
+aProgrammer2.greetLikeNormalPeople(); //
+aProgrammer2.othergreet(); //
+var aProgrammer3 = new Programmer(); //这里aProgrammer3类型用Object也不报错，但用string是报错的，因为Object是Programmer的父类
+var aProgrammer4 = new Person(); //这样也不行，Programmer这个得是Person的父类才可以
