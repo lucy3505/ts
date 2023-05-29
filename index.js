@@ -1,10 +1,15 @@
-var Programmer = /** @class */ (function () {
-    function Programmer() {
-    }
-    return Programmer;
-}());
-var programmer = new Programmer(); //这里没有制定变量programmer的类型，所以没有报错，不受Person接口的限制
-programmer.first_name = "tony";
-var programmer2 = new Programmer();
-//Cannot assign to 'first_name' because it is a read-only property.
-programmer2.first_name = "tony"; //programmer2的类型声明了是Person，那么Person中的first_Name是readonly,不能修改
+var printCallback;
+// printCallback = () => {}; 这样写也行，不传参数
+//如果传参了，参数的类型要一致,返回值也要一致
+// printCallback = (suc: number): number => {}; // Type 'boolean' is not assignable to type 'number'.
+printCallback = function (suc) {
+    console.log("callback", suc);
+}; // 少参数也是可以的，如果加参数，那你类型要一致
+var person = {
+    first_name: "hello",
+    print: function (callback) {
+        console.log("hello");
+        callback(true);
+    },
+};
+person.print && person.print(printCallback);

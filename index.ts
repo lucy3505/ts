@@ -1,14 +1,31 @@
 interface Person {
   readonly first_name: string;
+  last_name?: string;
+  print?(callback: PrintCallback): void; //有名称的函数
+  [propName: string]: any;
 }
 
-class Programmer implements Person {
-  first_name: string;
+interface PrintCallback {
+  //可以简单理解为匿名函数
+  (success: boolean, name?: string): void;
 }
 
-const programmer = new Programmer(); //这里没有制定变量programmer的类型，所以没有报错，不受Person接口的限制
-programmer.first_name = "tony";
+let printCallback: PrintCallback;
+// printCallback = () => {}; 这样写也行，不传参数
 
-const programmer2: Person = new Programmer();
-//Cannot assign to 'first_name' because it is a read-only property.
-programmer2.first_name = "tony"; //programmer2的类型声明了是Person，那么Person中的first_Name是readonly,不能修改
+//如果传参了，参数的类型要一致,返回值也要一致
+// printCallback = (suc: number): number => {}; // Type 'boolean' is not assignable to type 'number'.
+printCallback = (suc: boolean): void => {
+  console.log("callback", suc);
+}; // 少参数也是可以的，如果加参数，那你类型要一致
+
+let person: Person = {
+  first_name: "hello",
+
+  print: (callback: PrintCallback): void => {
+    console.log("hello");
+    callback(true);
+  },
+};
+
+person.print && person.print(printCallback);
