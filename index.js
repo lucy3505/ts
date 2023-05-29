@@ -1,58 +1,24 @@
+var person = {
+    first_name: "111",
+    // last_name: "rails",
+    age: 12,
+};
+var Programmer = /** @class */ (function () {
+    function Programmer() {
+    }
+    return Programmer;
+}());
+var programmer = new Programmer();
+programmer.first_name = "tony";
 var sayName = function (o) {
-    o.greet();
+    console.log(o.first_name);
 };
-//实现接口，微信支付，支付宝支付
-//类实现接口
-var Employee = /** @class */ (function () {
-    function Employee() {
-    }
-    Employee.prototype.greet = function () {
-        console.log("I am employee");
-    };
-    return Employee;
-}());
-// let em = new Employee();
-// em.greet();
-var Customer = /** @class */ (function () {
-    function Customer() {
-    }
-    Customer.prototype.greet = function () {
-        console.log("I am customer");
-    };
-    return Customer;
-}());
-// let cu = new Customer();
-// sayName(cu);
-var customer = new Customer();
-customer.greet();
-var employee = new Employee();
-employee.greet();
-//可能会发送http请求
-//真正支付的请求
-var do_pay = function (pay) {
-    //有一些逻辑
-    pay.post();
-};
-//微信支付
-var WePay = /** @class */ (function () {
-    function WePay() {
-    }
-    //调微信支付的接口
-    WePay.prototype.post = function () { };
-    return WePay;
-}());
-//支付宝支付
-var AliPay = /** @class */ (function () {
-    function AliPay() {
-    }
-    //调支付宝支付的接口
-    AliPay.prototype.post = function () { };
-    return AliPay;
-}());
-//其他支付的接口
-var we_pay = new WePay();
-var ali_pay = new AliPay();
-//微信支付
-do_pay(we_pay);
-//支付宝支付
-do_pay(ali_pay);
+sayName(programmer);
+sayName(person);
+sayName({ first_name: "xxx", age: 22 }); //error TS2345: Argument of type '{ first_name: string; age: number; }' is not assignable to parameter of type 'Person'.
+// Object literal may only specify known properties, and 'age' does not exist in type 'Person'.
+//!直接传对象必须和接口参数一致, 用变量就没关系 sayName(person);
+//类型断言
+sayName({ first_name: "xxx", age: 22 });
+//使用 [propName:string]:any
+sayName({ first_name: "xxx", age: 22, lasst_name: "12" });
