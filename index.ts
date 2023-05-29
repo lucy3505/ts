@@ -1,36 +1,35 @@
-class Person {
-  private _name: string; //如果是private
-  private _age: number;
-  constructor(name: string, age: number) {
-    this._name = name;
-    this._age = age;
+//tsc --noImplicitThis index.ts  能显示里面this的指向
+class Rectangle {
+  private w: number;
+  private h: number;
+  constructor(w: number, h: number) {
+    this.w = w;
+    this.h = h;
   }
 
-  //读取
-  getName(): string {
-    return this._name;
+  getAreaFunction() {
+    return function (): number {
+      return this.w * this.h;
+    };
   }
 
-  //设置
-  setName(name: string): void {
-    this._name = name;
-  }
-  get name(): string {
-    return this._name;
-  }
-
-  set name(name: string) {
-    this._name = name;
+  getAreaFunction2() {
+    return (): number => {
+      return this.w * this.h;
+    };
   }
 }
 
-let p: Person = new Person("hp", 22);
-//输出name
-console.log(p.getName());
-console.log(p.name);
-//如果要用p.name来读取呢
+let rectangle: Rectangle = new Rectangle(2, 5);
+//返回function
+let areaFunction = rectangle.getAreaFunction();
+//得到面积
+//this 是指向rectangle这个对象，还是调用的上下文
+let area = areaFunction();
+console.log(area);
 
-//修改name
-p.setName("jp");
-p.name = "jp2";
-console.log(p);
+let areaFunction2 = rectangle.getAreaFunction2();
+//得到面积
+//this 是指向rectangle这个对象，还是调用的上下文
+let area2 = areaFunction2();
+console.log(area2);

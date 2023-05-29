@@ -1,34 +1,31 @@
-var Person = /** @class */ (function () {
-    function Person(name, age) {
-        this._name = name;
-        this._age = age;
+//tsc --noImplicitThis index.ts  能显示里面this的指向
+var Rectangle = /** @class */ (function () {
+    function Rectangle(w, h) {
+        this.w = w;
+        this.h = h;
     }
-    //读取
-    Person.prototype.getName = function () {
-        return this._name;
+    Rectangle.prototype.getAreaFunction = function () {
+        return function () {
+            return this.w * this.h;
+        };
     };
-    //设置
-    Person.prototype.setName = function (name) {
-        this._name = name;
+    Rectangle.prototype.getAreaFunction2 = function () {
+        var _this = this;
+        return function () {
+            return _this.w * _this.h;
+        };
     };
-    Object.defineProperty(Person.prototype, "name", {
-        get: function () {
-            return this._name;
-        },
-        set: function (name) {
-            this._name = name;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return Person;
+    return Rectangle;
 }());
-var p = new Person("hp", 22);
-//输出name
-console.log(p.getName());
-console.log(p.name);
-//如果要用p.name来读取呢
-//修改name
-p.setName("jp");
-p.name = "jp2";
-console.log(p);
+var rectangle = new Rectangle(2, 5);
+//返回function
+var areaFunction = rectangle.getAreaFunction();
+//得到面积
+//this 是指向rectangle这个对象，还是调用的上下文
+var area = areaFunction();
+console.log(area);
+var areaFunction2 = rectangle.getAreaFunction2();
+//得到面积
+//this 是指向rectangle这个对象，还是调用的上下文
+var area2 = areaFunction2();
+console.log(area2);
