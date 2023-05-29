@@ -1,35 +1,40 @@
-//tsc --noImplicitThis index.ts  能显示里面this的指向
-class Rectangle {
-  private w: number;
-  private h: number;
-  constructor(w: number, h: number) {
-    this.w = w;
-    this.h = h;
-  }
+//1
+let a: any;
+a = function (): void {
+  console.log("it work");
+};
 
-  getAreaFunction() {
-    return function (): number {
-      return this.w * this.h;
-    };
-  }
+function fun(): any {
+  return function (): void {
+    console.log("it work");
+  };
+}
+//2
+let c: Function;
+c = function (): void {
+  console.log("It work");
+};
 
-  getAreaFunction2() {
-    return (): number => {
-      return this.w * this.h;
-    };
-  }
+//3
+let d: (para: string) => string;
+d = function (pass: string): string {
+  return pass;
+};
+//4
+type e = (para: string) => string;
+const f: e = function (pass: string): string {
+  return pass;
+};
+
+//5
+interface g {
+  (para: string): string;
 }
 
-let rectangle: Rectangle = new Rectangle(2, 5);
-//返回function
-let areaFunction = rectangle.getAreaFunction();
-//得到面积
-//this 是指向rectangle这个对象，还是调用的上下文
-let area = areaFunction();
-console.log(area);
+const h: g = (pass: string) => pass;
 
-let areaFunction2 = rectangle.getAreaFunction2();
-//得到面积
-//this 是指向rectangle这个对象，还是调用的上下文
-let area2 = areaFunction2();
-console.log(area2);
+function test(cb: () => string) {
+  let s = cb();
+  return s;
+}
+test(() => "hello");
