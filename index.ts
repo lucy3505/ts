@@ -1,47 +1,49 @@
-//接口
-//传过来的参数必须包含接口的属性和方法
-interface Named {
-  //属性
-  name: string;
-  //方法
-  //没有方法体的
-  //具体的对象中实现方法体
-  print(name: string): void;
-}
+//定义类型别名 type alias
+//以后就可以用Name来代替string类型
+type Name = string;
 
-//函数
-// 只要传过来的参数 o 有name 属性
-// o 可以是一个接口类型，这个接口类型要有name 属性
-//定义o为接口类型，可以传入一个对象，如果不用接口类型，sayName(‘122’);编译不会报错，只有运行的时候才能抱错
-const sayName = (o: Named) => {
-  o.print(o.name);
+let my_name: Name = "rails";
+// let my_name: Name = true;
+
+// let my_name: string = "rails";
+
+type User = {
+  name: string;
+  age: number;
+  print(): void;
 };
 
-//对象
-const person = {
+// type User={ //!没法2个type混一起，type不能重复定义，interface可以混一起，所以interface用的比较多，interface还可以继承
+//   email:string
+// }
+
+const user: User = {
+  name: "rails",
   age: 27,
-  name: "hfpp2012",
-  print: (name) => {
-    console.log(name);
+  print() {
+    console.log("123");
   },
 };
-sayName(person);
-// const bottle = {
-//   litres: 1,
-//   name: "biaoliu",
-// };
 
-class Person {
+const user2: { name: string; age: number } = {
+  name: "rail",
+};
+
+const user3: IUser = {
+  name: "rails",
+  // age: 27,
+};
+
+interface IUser {
   name: string;
-  print(): void {
-    //不传参也是可以的
-    console.log(this.name);
-  }
+  age: number;
 }
 
-let aPerson = new Person();
-// aPerson.name = "rails365";
+interface IUser {
+  email: string;
+}
 
-// sayName(aPerson);
-
-// sayName(bottle);
+const other_user: IUser = {
+  name: "rails",
+  age: 22, //!必须要有email，两个interface会混一起
+};
