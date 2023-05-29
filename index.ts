@@ -1,41 +1,39 @@
-interface Todo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
+//不能实例化,要用另一个类去继承它
+abstract class Person {
+  abstract subName: string;
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  display(): void {
+    console.log(this.name);
+  }
+
+  //抽象的方法
+  //没有方法体
+  //继承这个抽象类的时候，一定要去实现这个抽象方法
+  //可加public private，protected控制符
+  public abstract find(string): Person;
 }
 
-class Todo1 {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
-// let todos: Todo1[]
+let p: Person = new Person("xxx"); // Cannot create an instance of an abstract class.
 
-let todo: Todo = {
-  userId: 1,
-  id: 1,
-  title: "delectus ant fds",
-  completed: false,
-};
-let todos: Todo[] = [
-  {
-    userId: 1,
-    id: 1,
-    title: "delectus ant fds",
-    completed: false,
-  },
-  {
-    userId: 2,
-    id: 2,
-    title: "delectus222 ant fds",
-    completed: true,
-  },
-  {
-    userId: 3,
-    id: 3,
-    title: "delectus3333 ant fds",
-    completed: false,
-  },
-];
+class Employee extends Person {
+  empCode: number;
+  subName: string;
+  constructor(name: string, code: number) {
+    super(name); //必须调用super
+    this.subName = name;
+    this.empCode = code;
+  }
+
+  public find(name: string): Person {
+    return new Employee(name, 1);
+  }
+}
+
+let p1: Person = new Employee("xxx", 12);
+let p2: Person = p1.find("rails");
+console.log(p2);
