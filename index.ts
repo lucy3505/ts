@@ -1,37 +1,57 @@
-interface Person {
-  name: string;
+class Component {
+  private width: number;
+  protected height: number;
+
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
+
+  display(): void {
+    console.log("displaying");
+    console.log(this.height);
+  }
+}
+//接口继承类
+//继承类的方法和属性，但可以不用实现方法
+//也可以定义自己的方法
+interface Widget extends Component {
+  hide(): void;
 }
 
-interface Employee {
-  age: number;
+class Button extends Component implements Widget {
+  //如果没有extends Component那就要实现Component里的内容  比如写成class Button implements Widget
+  hide(): void {
+    console.log("hiding");
+  }
+  display(): void {
+    console.log("ddd");
+  }
 }
 
-//继承另一个接口
-//会继承Person的属性和方法
-interface Programmer extends Person {
-  age: number;
+let w: Widget = new Button(1, 2);
+console.log(w);
+w.display();
+
+class Button2 implements Widget {
+  //如果没有extends Component那就要实现Component里的内容  比如写成class Button implements Widget
+  //Component里面是private，protected那就只能extends Component,如果是public那就能自己实现width，height
+  private width: number;
+  protected height: number;
+
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
+  display(): void {
+    console.log("displaying");
+    console.log(this.height);
+  }
+
+  hide(): void {
+    console.log("hiding");
+  }
 }
-
-let p: Programmer = {
-  age: 27,
-  name: "rails",
-};
-
-//类不能继承多个类，也就是说不能有多个父亲
-//但可以实现多个接口
-//每个接口的属性和方法都要实现
-class P implements Person, Employee {
-  name: string;
-  age: number;
-}
-
-let p1: P = {
-  name: "rail",
-  age: 25,
-};
-let p2: Person = p1;
-
-let p3: Employee = p1;
-
-//p2和p3都是看起来像鸭子就可以，p4用这种写法不能有age属性
-let p4: Person = { name: "12", age: 12 };
+let w2: Widget = new Button2(1, 2);
+console.log(w2);
+w2.display();
