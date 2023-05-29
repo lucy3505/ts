@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Person = /** @class */ (function () {
-    function Person() {
-        this.firstName = "rials";
-        this.lastName = "hrrp";
+    function Person(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
     Person.prototype.sayHi = function () {
         console.log("private sayHi");
@@ -46,16 +46,13 @@ var Person = /** @class */ (function () {
     };
     return Person;
 }());
-var aPerson = new Person();
-// aPerson.lastName = "jj";//Property 'lastName' is protected and only accessible within class 'Person' and its subclasses.
-// console.log(aPerson.firstName); //Property 'firstName' is private and only accessible within class 'Person'
-aPerson.setFirstName("rails");
-aPerson.getFirstName();
-aPerson.callSayHi();
+var aPerson = new Person("rail", "365"); //Constructor of class 'Person' is protected and only accessible within the class declaration.
 var Programmer = /** @class */ (function (_super) {
     __extends(Programmer, _super);
-    function Programmer() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Programmer(firstName, lastName) {
+        var _this = _super.call(this, firstName, lastName) || this;
+        console.log("Programmer constructor");
+        return _this;
     }
     Programmer.prototype.greet = function () {
         console.log("heelo world");
@@ -65,18 +62,14 @@ var Programmer = /** @class */ (function (_super) {
     };
     //子类定义的方法
     Programmer.prototype.getFullName = function () {
-        return "".concat(this.firstName, " ").concat(this.lastName);
+        // return `${this.firstName} ${this.lastName}`;
     };
     Programmer.prototype.getFullName1 = function () {
         return "".concat(this.getFirstName(), " ").concat(this.getLastName());
     };
     return Programmer;
 }(Person));
-var aProgrammer = new Programmer();
-//继承的也是不能访问私有属性
-console.log(aProgrammer.firstName); //Property 'firstName' is private and only accessible within class 'Person'
-//继承过来 的方法
-console.log(aProgrammer.getFirstName()); //Property 'firstName' is private and only accessible within class 'Person'
-console.log(aProgrammer.lastName); //Property 'lastName' is protected and only accessible within class 'Person' and its subclasses.
-console.log(aProgrammer.getFullName());
-console.log(aProgrammer.getFullName1());
+var aProgrammer = new Programmer("rail", "365 ");
+// Constructor of class 'Person' is protected and only accessible within the class declaration
+//需要在class Programmer constructor里进行重写，父类的constructor 是protected的时候可以重写，是private 的时候不能重写
+//是protected的时候，父类不能new,子类在重写constructor后能new

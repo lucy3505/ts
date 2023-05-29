@@ -5,9 +5,9 @@ class Person {
   private firstName: string; //对类型进行限制
   protected lastName;
 
-  constructor() {
-    this.firstName = "rials";
-    this.lastName = "hrrp";
+  protected constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
   }
   private sayHi() {
     console.log("private sayHi");
@@ -42,14 +42,14 @@ class Person {
   }
 }
 
-let aPerson = new Person();
-// aPerson.lastName = "jj";//Property 'lastName' is protected and only accessible within class 'Person' and its subclasses.
-// console.log(aPerson.firstName); //Property 'firstName' is private and only accessible within class 'Person'
-aPerson.setFirstName("rails");
-aPerson.getFirstName();
-aPerson.callSayHi();
+let aPerson = new Person("rail", "365"); //Constructor of class 'Person' is protected and only accessible within the class declaration.
 
 class Programmer extends Person {
+  constructor(firstName, lastName) {
+    super(firstName, lastName);
+    console.log("Programmer constructor");
+  }
+
   public greet(): void {
     console.log("heelo world");
   }
@@ -60,21 +60,14 @@ class Programmer extends Person {
 
   //子类定义的方法
   getFullName() {
-    return `${this.firstName} ${this.lastName}`;
+    // return `${this.firstName} ${this.lastName}`;
   }
 
   getFullName1() {
     return `${this.getFirstName()} ${this.getLastName()}`;
   }
 }
-
-let aProgrammer = new Programmer();
-//继承的也是不能访问私有属性
-console.log(aProgrammer.firstName); //Property 'firstName' is private and only accessible within class 'Person'
-
-//继承过来 的方法
-console.log(aProgrammer.getFirstName()); //Property 'firstName' is private and only accessible within class 'Person'
-
-console.log(aProgrammer.lastName); //Property 'lastName' is protected and only accessible within class 'Person' and its subclasses.
-console.log(aProgrammer.getFullName());
-console.log(aProgrammer.getFullName1());
+let aProgrammer = new Programmer("rail", "365 ");
+// Constructor of class 'Person' is protected and only accessible within the class declaration
+//需要在class Programmer constructor里进行重写，父类的constructor 是protected的时候可以重写，是private 的时候不能重写
+//是protected的时候，父类不能new,子类在重写constructor后能new
