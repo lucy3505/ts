@@ -1,22 +1,58 @@
-var my_name = "rails";
-// type User={ //!没法2个type混一起，type不能重复定义，interface可以混一起，所以interface用的比较多，interface还可以继承
-//   email:string
-// }
-var user = {
-    name: "rails",
-    age: 27,
-    print: function () {
-        console.log("123");
-    },
+var sayName = function (o) {
+    o.greet();
 };
-var user2 = {
-    name: "rail",
+//实现接口，微信支付，支付宝支付
+//类实现接口
+var Employee = /** @class */ (function () {
+    function Employee() {
+    }
+    Employee.prototype.greet = function () {
+        console.log("I am employee");
+    };
+    return Employee;
+}());
+// let em = new Employee();
+// em.greet();
+var Customer = /** @class */ (function () {
+    function Customer() {
+    }
+    Customer.prototype.greet = function () {
+        console.log("I am customer");
+    };
+    return Customer;
+}());
+// let cu = new Customer();
+// sayName(cu);
+var customer = new Customer();
+customer.greet();
+var employee = new Employee();
+employee.greet();
+//可能会发送http请求
+//真正支付的请求
+var do_pay = function (pay) {
+    //有一些逻辑
+    pay.post();
 };
-var user3 = {
-    name: "rails",
-    // age: 27,
-};
-var other_user = {
-    name: "rails",
-    age: 22, //!必须要有email，两个interface会混一起
-};
+//微信支付
+var WePay = /** @class */ (function () {
+    function WePay() {
+    }
+    //调微信支付的接口
+    WePay.prototype.post = function () { };
+    return WePay;
+}());
+//支付宝支付
+var AliPay = /** @class */ (function () {
+    function AliPay() {
+    }
+    //调支付宝支付的接口
+    AliPay.prototype.post = function () { };
+    return AliPay;
+}());
+//其他支付的接口
+var we_pay = new WePay();
+var ali_pay = new AliPay();
+//微信支付
+do_pay(we_pay);
+//支付宝支付
+do_pay(ali_pay);
