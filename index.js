@@ -16,9 +16,22 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Person = /** @class */ (function () {
     function Person(firstName, lastName) {
+        this.name = "123";
         this.firstName = firstName;
         this.lastName = lastName;
     }
+    Person.getStaticAge = function () {
+        return "my age is ".concat(Person.age);
+    };
+    Person.prototype.getAge = function () {
+        return "my age is ".concat(Person.age);
+    };
+    Person.all = function () {
+        //Person对应数据库的一个表模型
+        //可以列出persons表的所有记录
+        //new出来的可能是一条记录，要找到所有记录，可能要通过静态方法
+        // return Person.select().all()
+    };
     Person.prototype.sayHi = function () {
         console.log("private sayHi");
     };
@@ -44,9 +57,17 @@ var Person = /** @class */ (function () {
         this.greet();
         console.log("*******");
     };
+    //静态属性 static
+    Person.age = 10;
     return Person;
 }());
+// console.log(Person.age);
 var aPerson = new Person("rail", "365"); //Constructor of class 'Person' is protected and only accessible within the class declaration.
+console.log(aPerson.getAge());
+//public的getStaticAge来调用protected 的static age,如果是private，那不能访问
+console.log(Person.getStaticAge());
+console.log(aPerson.name);
+aPerson.name = "222"; //Cannot assign to 'name' because it is a read-only property.
 var Programmer = /** @class */ (function (_super) {
     __extends(Programmer, _super);
     function Programmer(firstName, lastName) {
@@ -56,6 +77,9 @@ var Programmer = /** @class */ (function (_super) {
     }
     Programmer.prototype.greet = function () {
         console.log("heelo world");
+    };
+    Programmer.getSuperAge = function () {
+        return "super age is ".concat(Person.age);
     };
     Programmer.prototype.greetLikeNormalPeople = function () {
         _super.prototype.greet.call(this);
@@ -73,3 +97,6 @@ var aProgrammer = new Programmer("rail", "365 ");
 // Constructor of class 'Person' is protected and only accessible within the class declaration
 //需要在class Programmer constructor里进行重写，父类的constructor 是protected的时候可以重写，是private 的时候不能重写
 //是protected的时候，父类不能new,子类在重写constructor后能new
+console.log(Programmer.age); //Property 'age' is protected and only accessible within class 'Person' and its subclasses.
+console.log(Programmer.getStaticAge());
+console.log(Programmer.getSuperAge());
