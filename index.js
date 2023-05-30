@@ -1,66 +1,26 @@
-//打印机A
-var PrinterA = /** @class */ (function () {
-    function PrinterA() {
-    }
-    PrinterA.prototype.printLandscape = function () {
-        console.log("printing in landscape");
-    };
-    PrinterA.prototype.type = function () {
-        return "landscape";
-    };
-    return PrinterA;
-}());
-//打印机B
-var PrinterB = /** @class */ (function () {
-    function PrinterB() {
-    }
-    //肖像画
-    PrinterB.prototype.printPortrait = function () {
-        console.log("printing in portrait");
-    };
-    return PrinterB;
-}());
-function doprint(pt) {
-    if (pt.pageOrientation === "landscape") {
-        pt.printLandscape();
-    }
-    else if (pt.pageOrientation === "portrait") {
-        pt.printPortrait();
-    }
-    else {
-        var unknowPrinter = pt; //因为不是PrinterA | PrinterB，就不是我们所期待的参数，用never
-    }
+//可以用很多类型来代替 T
+//T[]代表数组，每个元素都是T类型
+function getArray(items) {
+    return new Array().concat(items);
 }
-function getEmployeeSalary(emp) {
-    switch (emp.empType) {
-        case "FullType":
-            return emp.annualSalary;
-        case "PartTime":
-            return emp.monthlySalary;
-        case "Contractor":
-            return emp.hourlySalary;
-        default:
-            var temp = emp;
-            return temp;
-    }
+// function getArray(items: number[]): number[] {
+//   return new Array().concat(items);
+// }
+//调用，可以传入很多类型，代码复用
+var myNumArray = getArray([100, 200]);
+var myStrArray = getArray(["hello", '"world']);
+//这样写会推断T是boolean类型，但这样不推荐
+var myBooleanArray = getArray([true, false]);
+myNumArray.push(200);
+myNumArray.push("222");
+myStrArray.push(123);
+myStrArray.push("123");
+myBooleanArray.push("123");
+function getArray1(items) {
+    console.log(items.length); //T可以是任何类型，length不是任何类型都有的
+    return T;
 }
-//enum
-var ShapeType;
-(function (ShapeType) {
-    ShapeType[ShapeType["TRIANGLE"] = 0] = "TRIANGLE";
-    ShapeType[ShapeType["RECTANGLE"] = 1] = "RECTANGLE";
-})(ShapeType || (ShapeType = {}));
-function getArea(shape) {
-    switch (shape.shapeType) {
-        case ShapeType.TRIANGLE:
-            return (shape.base * shape.height) / 2;
-        case ShapeType.RECTANGLE:
-            return shape.length * shape.width;
-        default:
-            var temp = shape;
-            return temp;
-    }
+function getArray2(items, name) {
+    console.log(items.length); //T可以是任何类型，所有length不是任何类型都有的
+    return items;
 }
-var shape = { shapeType: ShapeType.RECTANGLE, length: 5, width: 5 };
-var area = getArea(shape);
-console.log(area);
