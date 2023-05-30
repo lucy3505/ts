@@ -1,19 +1,14 @@
-//x? number|undefined
-function show(x) {
-    // function show(x?: number  | null): void {//加了？就是undefined可以传，但是null要加进去，否则不能传null
-    if (x === undefined) {
-        console.log("value not set");
-    }
-    else if (x === null) {
-        console.log("value is null");
-    }
-    else {
-        console.log(x);
-    }
+//tsc index.ts非空检查
+// tsc index.ts --strictNullChacks严格的空检察
+function splitInHalf(str) {
+    var checkString = function () {
+        if (str === null || str === undefined) {
+            str = "test";
+        }
+    };
+    checkString();
+    //! str!告诉编译器不能为空
+    return str.substring(0, str.length / 2);
 }
-var x = 10;
-var y;
-var z = null;
-show(x);
-show(y);
-show(z);
+var s = splitInHalf("hello");
+console.log(s);
