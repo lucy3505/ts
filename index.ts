@@ -1,72 +1,72 @@
-//函数名相同，参数不同
-//没有实现的定义
-function sum(x: number, y: number): number;
-function sum(x: number, y: number, z: number): number;
-
-//上面两种定义的组合实现
-function sum(x: number, y: number, z?: number): number {
-  // console.log(typeof z);
-  if (typeof z === "undefined") {
-    return x + y;
-  } else {
-    return x + y + z;
-  }
-}
-
-sum(1, 2);
-let n = sum(1, 2, 3);
-// console.log(n);
-
-n = sum(1, 2);
-// console.log(n);
-
-function divide(x: number, y: number): number;
-function divide(str: string, y: number): string[];
-
-function divide(x: any, y: number): any {
+//!第一种：使用typeof
+function show(x: number | string): void {
+  console.log(typeof x);
   if (typeof x === "number") {
-    return x / y;
-  } else if (typeof x === "string") {
-    return [x.substring(0, y), x.substring(y)];
+    console.log("a number " + x);
+  } else {
+    console.log("a string " + x);
   }
 }
 
-let n1: number = divide(6, 2);
-console.log(n1);
+show("test string ");
+show(4);
 
-let s: string[] = divide("football", 4);
-console.log(s);
+class Person {}
+let person = new Person();
+console.log(typeof person);
+console.log(typeof new String("test"));
+console.log(typeof undefined);
+console.log(typeof null);
 
-//class中函数重载
-//静态方法和实例方法
-class Util {
-  divide(x: number, y: number): number;
-  divide(str: string, y: number): string[];
-
-  divide(x: any, y: number): any {
-    if (typeof x === "number") {
-      return x / y;
-    } else if (typeof x === "string") {
-      return [x.substring(0, y), x.substring(y)];
-    }
+//!第二种：使用属性
+class Car {
+  start() {
+    console.log("car starting");
+  }
+  drive() {
+    console.log("car driving");
   }
 }
 
-let a: Util = new Util();
-console.log(a.divide(6, 2));
-console.log(a.divide("hello world", 4));
-
-class Util2 {
-  static divide(x: number, y: number): number;
-  static divide(str: string, y: number): string[];
-
-  static divide(x: any, y: number): any {
-    if (typeof x === "number") {
-      return x / y;
-    } else if (typeof x === "string") {
-      return [x.substring(0, y), x.substring(y)];
-    }
+class Bike {
+  start() {
+    console.log("bike starting");
+  }
+  ride() {
+    console.log("bike ridding");
   }
 }
 
-let c: number = Util2.divide(6, 2);
+//boolean 返回值发挥的作用是在运行时
+//vehicle is Car发挥在编译时期
+function isCar(vehicle: Bike | Car): vehicle is Car {
+  return (vehicle as Car).drive !== undefined;
+}
+
+function move(vehicle: Bike | Car): void {
+  vehicle.start();
+  //vehicle.drive!==undefined
+  // if (vehicle.drive) {//Property 'drive' does not exist on type 'Car | Bike'.
+  if ((vehicle as Car).drive) {
+    //用类型断言解决上面抱错
+    (<Car>vehicle).drive();
+  } else {
+    (<Bike>vehicle).ride();
+  }
+  //为了避免断言的写法，可以使用函数的写法
+  if (isCar(vehicle)) {
+    vehicle.drive(); //如果isCar()返回值是boolean，这里就会抱错：Property 'ride' does not exist on type 'Car | Bike'.
+    //使用vehicle is Car就不会抱错，因为vehicle is Car发挥在编译时期，就是给vehicle断言了
+  } else {
+    vehicle.ride();
+  }
+
+  //!第三种 instanceof 不需要用断言，最好的方法
+  if (vehicle instanceof Car) {
+    vehicle.drive();
+  } else {
+    vehicle.ride();
+  }
+}
+
+move(new Bike());
