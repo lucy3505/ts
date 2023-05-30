@@ -1,26 +1,52 @@
-//可以用很多类型来代替 T
-//T[]代表数组，每个元素都是T类型
-function getArray(items) {
-    return new Array().concat(items);
-}
-// function getArray(items: number[]): number[] {
-//   return new Array().concat(items);
-// }
-//调用，可以传入很多类型，代码复用
-var myNumArray = getArray([100, 200]);
-var myStrArray = getArray(["hello", '"world']);
-//这样写会推断T是boolean类型，但这样不推荐
-var myBooleanArray = getArray([true, false]);
-myNumArray.push(200);
-myNumArray.push("222");
-myStrArray.push(123);
-myStrArray.push("123");
-myBooleanArray.push("123");
-function getArray1(items) {
-    console.log(items.length); //T可以是任何类型，length不是任何类型都有的
-    return T;
-}
-function getArray2(items, name) {
-    console.log(items.length); //T可以是任何类型，所有length不是任何类型都有的
-    return items;
-}
+var List = /** @class */ (function () {
+    function List(elements) {
+        this.data = elements;
+    }
+    List.prototype.add = function (t) {
+        this.data.push(t);
+    };
+    List.prototype.remove = function (t) {
+        var index = this.data.indexOf(t);
+        if (index > -1) {
+            this.data.splice(index, 1);
+        }
+    };
+    List.prototype.asArray = function () {
+        return this.data;
+    };
+    return List;
+}());
+var numbers = new List([1, 2, 3, 4]);
+numbers.add(5);
+numbers.remove(5);
+var numArray = numbers.asArray();
+console.log(numArray);
+var fruits = new List(["apple", "banana", "orange"]);
+fruits.add("mango");
+fruits.remove("apple");
+var fruitArray = fruits.asArray();
+console.log(fruitArray);
+var Pair = /** @class */ (function () {
+    function Pair(first, second) {
+        this._first = first;
+        this._second = second;
+    }
+    Object.defineProperty(Pair.prototype, "first", {
+        get: function () {
+            return this._first;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Pair.prototype, "second", {
+        get: function () {
+            return this._second;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return Pair;
+}());
+var pair = new Pair(true, "11");
+console.log(pair.first);
+console.log(pair.second);
