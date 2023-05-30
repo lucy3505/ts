@@ -1,43 +1,48 @@
-interface Pair<F, S> {
-  first: F;
-  second: S;
+interface Collection<T> {
+  add(t: T): void;
+  remove(t: T): void;
+  asArray(): T[];
 }
 
-let p: Pair<string, number> = {
-  first: "rails",
-  second: 22,
-};
-
-interface Command<T, R> {
-  id: T;
-  run(): R;
+interface Collection1<T> extends Collection<T> {
+  getElementAt(index: number): T;
 }
 
-let c: Command<string, number> = {
-  id: Math.random().toString(35),
-  run: function () {
-    return 100;
-  },
-};
-console.log(c.id);
-console.log(c.run());
+class List<T> implements Collection<T> {
+  private data: T[] = [];
+  constructor(elements: T[]) {
+    this.data = elements;
+  }
 
-interface ElementChecker {
-  //函数
-  <T>(items: T[], toBeChecked: T, atIndex: number): boolean;
+  add(t: T): void {
+    this.data.push(t);
+  }
+
+  remove(t: T): void {
+    let index = this.data.indexOf(t);
+    if (index > -1) {
+      this.data.splice(index, 1);
+    }
+  }
+  asArray(): T[] {
+    return this.data;
+  }
 }
 
-function checkElementAt<T>(
-  elements: T[],
-  toBeChecked: T,
-  atIndex: number
-): boolean {
-  return elements[atIndex] === toBeChecked;
-}
+let numbers: Collection<number> = new List<number>([1, 23, 2]);
+numbers.add(4);
+numbers.remove(2);
+console.log(numbers);
 
-let checker: ElementChecker = checkElementAt;
-let items = [1, 3, 5, 7, 9];
-let b: boolean = checker<number>(items, 5, 2);
-console.log(b);
-let g: boolean = checker<number>(items, 5, 1);
-console.log(g);
+class BookList<T> extends List<T> {}
+
+let bookList: BookList<boolean> = new BookList<boolean>([true, false]);
+console.log(bookList);
+
+let bookList1: BookList<number> = new BookList<number>([1, 2]);
+console.log(bookList1);
+
+class MovieList extends List<boolean> {}
+
+let movieList: MovieList = new MovieList([true, false]);
+console.log(movieList);
