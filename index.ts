@@ -25,6 +25,8 @@ console.log(c.run());
 interface ElementChecker {
   //函数
   <T>(items: T[], toBeChecked: T, atIndex: number): boolean;
+
+  //function a<T>(items: T[], toBeChecked: T, atIndex: number):boolean
 }
 
 function checkElementAt<T>(
