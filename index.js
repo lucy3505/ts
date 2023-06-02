@@ -1,58 +1,55 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var List = /** @class */ (function () {
-    function List(elements) {
-        this.data = [];
-        this.data = elements;
-    }
-    List.prototype.add = function (t) {
-        this.data.push(t);
-    };
-    List.prototype.remove = function (t) {
-        var index = this.data.indexOf(t);
-        if (index > -1) {
-            this.data.splice(index, 1);
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
         }
+        return t;
     };
-    List.prototype.asArray = function () {
-        return this.data;
-    };
-    return List;
-}());
-var numbers = new List([1, 23, 2]);
-numbers.add(4);
-numbers.remove(2);
-console.log(numbers);
-var BookList = /** @class */ (function (_super) {
-    __extends(BookList, _super);
-    function BookList() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
     }
-    return BookList;
-}(List));
-var bookList = new BookList([true, false]);
-console.log(bookList);
-var bookList1 = new BookList([1, 2]);
-console.log(bookList1);
-var MovieList = /** @class */ (function (_super) {
-    __extends(MovieList, _super);
-    function MovieList() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+function foo(x, y, z) {
+    console.log(x, y, x);
+}
+var args = [0, 1, 2];
+//方法一：
+foo.apply(null, args);
+foo.apply(void 0, args);
+foo.apply(void 0, args);
+//1
+foo.apply(void 0, args); //类型断言
+//2
+function foo1() {
+    var x = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        x[_i] = arguments[_i];
     }
-    return MovieList;
-}(List));
-var movieList = new MovieList([true, false]);
-console.log(movieList);
+    console.log(JSON.stringify(x));
+}
+foo1.apply(void 0, args);
+function foo2(x, b, c) {
+    console.log(x, b);
+}
+foo2.apply(void 0, args);
+foo2(1, 2, 3);
+//destructuring 解构
+var _a = [1, 2, 3, 4], x = _a[0], y = _a[1], remaining = _a.slice(2);
+console.log(x, y, remaining);
+//Array Assignment
+var list = [1, 2];
+list = __spreadArray(__spreadArray([], list, true), [3, 4], false);
+console.log(list);
+//Object spread
+var point2D = { x: 1, y: 2 };
+var point3D = __assign(__assign({}, point2D), { z: 3 });
+console.log(point3D);
