@@ -1,33 +1,47 @@
-var A = /** @class */ (function () {
-    function A() {
-        this.x = 5;
+function drawShapes(shapes) {
+    shapes.forEach(function (shape) { return shape.draw(); });
+} //这里S extends Shape 传入的S必须要实现Shape
+var a = {
+    draw: function () {
+        console.log("aa");
+    },
+};
+var b = {
+    // draw() {
+    //   console.log("bb");
+    // },
+    bb: 1,
+}; //
+var Circle = /** @class */ (function () {
+    function Circle() {
     }
-    return A;
-}());
-var y; //说明y的取值范围只能是A的属性名
-y = "x";
-// y = "xa";//这里就会抱错，A没有这个属性
-var Test = /** @class */ (function () {
-    function Test() {
-        this.x = 6;
-    }
-    return Test;
-}());
-function getProp(a, test) {
-    return test[a];
-}
-var t = new Test();
-var prop = getProp("x", t);
-console.log(prop);
-var B = /** @class */ (function () {
-    function B() {
-    }
-    B.prototype.getAProp = function (a) {
-        return a[this.y];
+    Circle.prototype.draw = function () {
+        console.log("drawing Circle");
     };
-    return B;
+    return Circle;
 }());
-var b = new B();
-b.y = "x";
-var prop1 = b.getAProp(new A());
-console.log(prop1);
+var Rectangle = /** @class */ (function () {
+    function Rectangle() {
+    }
+    Rectangle.prototype.draw = function () {
+        console.log("drawing Rectangle");
+    };
+    return Rectangle;
+}());
+var circle = new Circle();
+var rectangle = new Rectangle();
+// drawShapes([circle, rectangle, b]);//这里b就不行，但是如果b里面有draw方法也是可以的
+drawShapes([circle, rectangle]);
+//K keyof T:K 是T的属性
+//extends 就是只要表象就行，可以是class也可以是object
+function getProp(key, obj) {
+    return obj[key];
+}
+var obj = { a: 2, b: 3 };
+var prop = getProp("b", obj);
+function getProp2(key, obj) {
+    return obj[key];
+}
+var obj2 = { a: 2, b: 3 };
+var prop2 = getProp("b", obj);
+console.log("prop2::", prop2);
