@@ -1,47 +1,41 @@
-function drawShapes(shapes) {
-    shapes.forEach(function (shape) { return shape.draw(); });
-} //这里S extends Shape 传入的S必须要实现Shape
-var a = {
-    draw: function () {
-        console.log("aa");
-    },
-};
-var b = {
-    // draw() {
-    //   console.log("bb");
-    // },
-    bb: 1,
-}; //
-var Circle = /** @class */ (function () {
-    function Circle() {
-    }
-    Circle.prototype.draw = function () {
-        console.log("drawing Circle");
-    };
-    return Circle;
-}());
-var Rectangle = /** @class */ (function () {
-    function Rectangle() {
-    }
-    Rectangle.prototype.draw = function () {
-        console.log("drawing Rectangle");
-    };
-    return Rectangle;
-}());
-var circle = new Circle();
-var rectangle = new Rectangle();
-// drawShapes([circle, rectangle, b]);//这里b就不行，但是如果b里面有draw方法也是可以的
-drawShapes([circle, rectangle]);
-//K keyof T:K 是T的属性
-//extends 就是只要表象就行，可以是class也可以是object
-function getProp(key, obj) {
-    return obj[key];
+function createInstance(t) {
+    //这里的new是要传个class 可以new的,对构造函数的一个约束
+    return new t();
 }
-var obj = { a: 2, b: 3 };
-var prop = getProp("b", obj);
-function getProp2(key, obj) {
-    return obj[key];
+var Test = /** @class */ (function () {
+    function Test(x) {
+        this.x = 4;
+        //如果这里用了constructor里面放了参数， 那么new ()=>T 就有问题，因为new ()=>T是没带参数，要带参数就变成new (x:number)=>T
+    }
+    return Test;
+}());
+//  let test:Test=new Test()
+//! class是可以直接当类型使用let test:Test， 正常声明类型使用type,interface，object,number等
+var test = createInstance(Test);
+console.log(test);
+//!
+function createInstance2(t) {
+    //这里的new是要传个class 可以new的,对构造函数的一个约束
+    return new t();
 }
-var obj2 = { a: 2, b: 3 };
-var prop2 = getProp("b", obj);
-console.log("prop2::", prop2);
+var Obj = { a: 1 };
+//  let test:Test=new Test()
+var test2 = createInstance(Obj); //
+console.log(test);
+var test3 = createInstance(Obj); //
+console.log(test);
+function createInstance3(t) {
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    //这里的new是要传个class 可以new的,对构造函数的一个约束
+    return new t(args);
+}
+var Test3 = /** @class */ (function () {
+    function Test3(x) {
+        this.x = x;
+    }
+    return Test3;
+}());
+// let test

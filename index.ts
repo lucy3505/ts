@@ -1,56 +1,52 @@
-interface Shape {
-  draw(): void;
+function createInstance<T>(t: new () => T): T {
+  //这里的new是要传个class 可以new的,对构造函数的一个约束
+  return new t();
 }
 
-function drawShapes<S extends Shape>(shapes: S[]): void {
-  shapes.forEach((shape) => shape.draw());
-} //这里S extends Shape 传入的S必须要实现Shape
-
-var a: Shape = {
-  draw() {
-    console.log("aa");
-  },
-};
-
-var b = {
-  // draw() {
-  //   console.log("bb");
-  // },
-  bb: 1,
-}; //
-
-class Circle implements Shape {
-  draw(): void {
-    console.log("drawing Circle");
+class Test {
+  x: number = 4;
+  constructor(x: number) {
+    //如果这里用了constructor里面放了参数， 那么new ()=>T 就有问题，因为new ()=>T是没带参数，要带参数就变成new (x:number)=>T
   }
 }
 
-class Rectangle implements Shape {
-  draw(): void {
-    console.log("drawing Rectangle");
+//  let test:Test=new Test()
+//! class是可以直接当类型使用let test:Test， 正常声明类型使用type,interface，object,number等
+let test: Test = createInstance<Test>(Test);
+console.log(test);
+
+//!
+function createInstance2<T>(t: new () => T): T {
+  //这里的new是要传个class 可以new的,对构造函数的一个约束
+  return new t();
+}
+
+interface IObj {
+  a: number;
+}
+const Obj = { a: 1 };
+
+//  let test:Test=new Test()
+
+let test2: IObj = createInstance<IObj>(Obj); //
+console.log(test);
+
+let test3: object = createInstance<object>(Obj); //
+console.log(test);
+
+function createInstance3<T>(
+  t: new (...constructorArgs: any[]) => T,
+  ...args: any[]
+): T {
+  //这里的new是要传个class 可以new的,对构造函数的一个约束
+  return new t(args);
+}
+
+class Test3 {
+  private x: number;
+  constructor(x: number) {
+    this.x = x;
   }
 }
 
-let circle = new Circle();
-let rectangle = new Rectangle();
-
-// drawShapes([circle, rectangle, b]);//这里b就不行，但是如果b里面有draw方法也是可以的
-drawShapes([circle, rectangle]);
-
-//K keyof T:K 是T的属性
-//extends 就是只要表象就行，可以是class也可以是object
-function getProp<T, K extends keyof T>(key: K, obj: T): any {
-  return obj[key];
-}
-
-let obj = { a: 2, b: 3 };
-let prop = getProp("b", obj);
-
-function getProp2<T>(key: keyof T, obj: T): any {
-  return obj[key];
-}
-
-let obj2 = { a: 2, b: 3 };
-let prop2 = getProp("b", obj);
-
-console.log("prop2::", prop2);
+// let test
