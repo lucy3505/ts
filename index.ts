@@ -1,38 +1,40 @@
-type ListType<T> = { elements: T[] };
-
-let numList: ListType<number> = { elements: [1, 2, 3] };
-console.log(numList);
-
-interface Item {
-  name: string;
-  price: number;
+interface Shape {
+  draw(): void;
 }
 
-type Entity<E> = { id: number } & E;
-let itemEntity: Entity<Item> = { id: 1, name: "tail", price: 222 };
-console.log(itemEntity);
-
-interface Person {
-  name: string;
+function drawShapes(shape: Shape): Shape {
+  shape.draw();
+  return shape;
 }
 
-interface Contact {
-  phone: string;
+let a = { draw: () => {} };
+
+drawShapes(a);
+
+class Circle implements Shape {
+  draw(): void {
+    console.log("drawing Circle");
+  }
+  n: "circle";
 }
 
-function showPersonContact(personContact: Person & Contact): void {
-  console.log(personContact);
+class Rectangle implements Shape {
+  draw(): void {
+    console.log("drawing Rectangle");
+  }
 }
 
-// &就是把两个类型合一起
-let personContact: Person & Contact = { name: "Dane", phone: "111-222-333" };
-showPersonContact(personContact);
+let circle = new Circle();
+let rectangle = new Rectangle();
 
-interface PersonDetail {
-  detail: Person & Contact;
+let c = drawShapes(circle); //! 这里推导出c的类型是Shape 但我希望是Circle
+let c1: Circle = drawShapes(circle); //这里 = 右边推导出的是Shape 我左边给的类型是Circle 我希望右边能给我Circle,这里就要用泛型
+
+function drawShapes1<Shape1 extends Shape>(shape: Shape1): Shape1 {
+  //Shape1是泛型 现在Shape1泛型可以是任何类型 想要对这个泛型做限制，所以Ts提供extends做限制，extends在这里不是继承，而是约束,只能继承类Shape这种类型的变量，可以扩展Shape属性
+  shape.draw();
+  return shape;
 }
 
-let personDetail: PersonDetail = {
-  detail: { name: "Dane", phone: "111-222-333" },
-};
-console.log(personDetail);
+let c2 = drawShapes1(circle);
+let c3 = drawShapes1(circle); //! 这里就能推出Circle，Circle是比Shape属性多的
