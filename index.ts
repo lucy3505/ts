@@ -34,7 +34,7 @@ function toBoolean(something: string | number): boolean {
   return <boolean>something; //也不能随意断言，因为string和number没法转化成boolean,getLength2中的number是可以用 .toString()转化成string的，所以不会抱错
 }
 
-//现在用这种写法会报错了
+//!现在用这种写法会报错了
 let person = {};
 person.name = "rails";
 person.age = 22;
